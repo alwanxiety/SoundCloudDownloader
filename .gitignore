@@ -1,0 +1,9 @@
+wireproxy.exe
+ffmpeg.exe
+ffprobe.exe
+/build/
+/dist/
+*.spec
+.venv/
+.idea/
+*.mp3
