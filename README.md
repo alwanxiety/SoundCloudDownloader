@@ -24,3 +24,9 @@
 1. Установите зависимости:
    ```bash
    pip install yt-dlp pyinstaller
+   
+---
+
+### 📝 Используемые компоненты
+* [FFmpeg](https://ffmpeg.org/) — используется для конвертации аудио и работы с тегами (распространяется под лицензиями LGPL/GPL).
+* [wireproxy](https://github.com/bropines/awg-wireproxy) — сетевой прокси-клиент для туннелирования трафика.
