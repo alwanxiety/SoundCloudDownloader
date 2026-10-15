@@ -5,33 +5,25 @@ import yt_dlp
 
 
 def get_resource_path(relative_path: str) -> str:
-    """Получает путь к файлам, которые вшиты внутрь .exe или лежат рядом в режиме разработки"""
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), relative_path)
 
 
 def get_external_path(relative_path: str) -> str:
-    """Получает путь к файлам, которые ДОЛЖНЫ лежать РЯДОМ с готовым .exe (например, config.conf)"""
     if getattr(sys, 'frozen', False):
-        # Если запущено как скомпилированный .exe — ищем в папке, где лежит сам .exe
         base_dir = os.path.dirname(sys.executable)
     else:
-        # Если запущено как .py скрипт — в папке со скриптом
         base_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base_dir, relative_path)
 
 
 def download_soundcloud_track(url: str, output_path: str = "%(title)s.%(ext)s"):
-    # Внутренние утилиты (вшиты в .exe)
     wireproxy_exe = get_resource_path("wireproxy.exe")
-
-    # Внешний конфиг (лежит РЯДОМ с .exe, чтобы пользователь мог его настроить)
     config_path = get_external_path("config.conf")
 
     proxy_process = None
 
-    # Проверяем наличие внешнего конфига и встроенного прокси
     if os.path.exists(wireproxy_exe) and os.path.exists(config_path):
         try:
             print("Подключение к VPN через wireproxy...")
@@ -47,7 +39,6 @@ def download_soundcloud_track(url: str, output_path: str = "%(title)s.%(ext)s"):
         print("⚠️ Файл config.conf не найден рядом с программой! Скачивание пойдет без VPN.")
         print(f"Ожидается файл по пути: {config_path}")
 
-    # Настройки yt-dlp (ffmpeg вшит внутрь .exe через get_resource_path(""))
     ydl_opts = {
         'format': 'bestaudio/best',
         'outtmpl': output_path,
